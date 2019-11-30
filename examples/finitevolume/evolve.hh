@@ -20,7 +20,6 @@ void evolve(const G& grid, const M& mapper, V& c, double t, double& dt)
     // intersection iterator type
     typedef typename GridView::IntersectionIterator IntersectionIterator;
 
-
     // get grid view on leaf part
     GridView gridView = grid.leafGridView();
 
@@ -81,7 +80,6 @@ void evolve(const G& grid, const M& mapper, V& c, double t, double& dt)
             // center of face in global coordinates
             Dune::FieldVector<ct,dimworld>
                 faceglobal = is->geometry().center();
-
 
             // evaluate velocity at face center
             Dune::FieldVector<double,dim> velocity = u(faceglobal,t);

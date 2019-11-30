@@ -4,9 +4,7 @@
 #include <vector>                 // STL vector class
 #include <array>
 
-
 // Warning suppression for Dune includes.
-#include <opm/grid/utility/platform_dependent/disable_warnings.h>
 
 #include <dune/common/parametertreeparser.hh>
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
@@ -17,17 +15,14 @@
 // checks for defined gridtype and inlcudes appropriate dgfparser implementation
 //#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
 
-#include <opm/grid/utility/platform_dependent/reenable_warnings.h>
-
 #include "vtkout.hh"
 // #include"transportproblem2.hh"
 #include "initialize.hh"
 #include "evolve.hh"
 
-#include "opm/grid/CpGrid.hpp"
+#include "ewoms/eclgrids/cpgrid.hh"
 
-#include <opm/grid/utility/OpmParserIncludes.hpp>
-
+#include <ewoms/eclgrids/utility/parserincludes.hh>
 
 typedef Dune::CpGrid GridType;
 
@@ -104,8 +99,6 @@ void timeloop(const G& grid, double tend)
     vtkout(grid,c,"concentration",counter,tend);     /*@\label{fvc:file}@*/
 }
 
-
-
 void initGrid(const Dune::ParameterTree &param, GridType& grid)
 {
     std::string fileformat = param.get<std::string>("fileformat");
@@ -113,7 +106,7 @@ void initGrid(const Dune::ParameterTree &param, GridType& grid)
         std::string grid_prefix = param.get<std::string>("grid_prefix");
         grid.readSintefLegacyFormat(grid_prefix);
     }
-#if HAVE_OPM_PARSER
+#if HAVE_EWOMS_PARSER
     else if (fileformat == "eclipse") {
         std::string filename = param.get<std::string>("filename");
         if (param.hasKey("z_tolerance")) {
@@ -122,11 +115,11 @@ void initGrid(const Dune::ParameterTree &param, GridType& grid)
         bool periodic_extension = param.get<bool>("periodic_extension", false);
         bool turn_normals = param.get<bool>("turn_normals", false);
 
-        Opm::ParseContext parseContext;
-        Opm::Parser parser;
+        Ewoms::ParseContext parseContext;
+        Ewoms::Parser parser;
         auto deck = parser.parseFile(filename , parseContext);
         const int* actnum = deck.hasKeyword("ACTNUM") ? deck.getKeyword("ACTNUM").getIntData().data() : nullptr;
-        Opm::EclipseGrid ecl_grid(deck , actnum);
+        Ewoms::EclipseGrid ecl_grid(deck , actnum);
 
         grid.processEclipseFormat(ecl_grid, periodic_extension, turn_normals);
     }
@@ -140,10 +133,9 @@ void initGrid(const Dune::ParameterTree &param, GridType& grid)
                                      param.get<double>("dz", 1.0) }};
         grid.createCartesian(dims, cellsz);
     } else {
-        OPM_THROW(std::runtime_error, "Unknown file format string: " << fileformat);
+        EWOMS_THROW(std::runtime_error, "Unknown file format string: " << fileformat);
     }
 }
-
 
 //===============================================================
 // The main function creates objects and does the time loop

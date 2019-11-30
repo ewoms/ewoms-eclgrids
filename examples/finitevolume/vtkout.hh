@@ -1,7 +1,5 @@
 // Warning suppression for Dune includes.
-#include <opm/grid/utility/platform_dependent/disable_warnings.h>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
-#include <opm/grid/utility/platform_dependent/reenable_warnings.h>
 
 #include <stdio.h>
 

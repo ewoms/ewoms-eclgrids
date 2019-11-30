@@ -2,12 +2,10 @@
 #include <config.h>
 
 // Warning suppression for Dune includes.
-#include <opm/grid/utility/platform_dependent/disable_warnings.h>
 
-#include <opm/grid/common/p2pcommunicator.hh>
+#include <ewoms/eclgrids/common/p2pcommunicator.hh>
 
 // Re-enable warnings.
-#include <opm/grid/utility/platform_dependent/reenable_warnings.h>
 
 #include <iostream>
 

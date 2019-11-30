@@ -1,14 +1,9 @@
-####################################################################
-# Dune module information file: This file gets parsed by dunecontrol
-# and by the CMake build scripts.
-####################################################################
-
-Module: opm-grid
-Description: DUNE module supporting grids in a corner-point format
+Module: ewoms-eclgrids
+Description: ECL compatible cornerpoint grids
 Version: 2020.04-pre
 Label: 2020.04-pre
-Maintainer: atgeirr@sintef.no
-MaintainerName: Atgeirr F. Rasmussen
-Url: http://opm-project.org
-Depends: dune-common (>= 2.4) dune-geometry (>= 2.4) dune-grid (>= 2.4) opm-common
-Suggests: dune-istl (>= 2.4)
+Maintainer: ewoms@ewoms.org
+MaintainerName: The eWoms Project
+Url: https://ewoms.org
+Depends: dune-common (>= 2.5) dune-geometry (>= 2.5) dune-grid (>= 2.5) ewoms-common ewoms-eclio
+Suggests: dune-istl (>= 2.5)

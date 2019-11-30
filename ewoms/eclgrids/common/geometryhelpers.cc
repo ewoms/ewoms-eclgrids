@@ -1,0 +1,38 @@
+//===========================================================================
+//
+// File: GeometryHelpers.cpp
+//
+// Created: Mon Jun 22 14:57:52 2009
+//
+// Author(s): Atgeirr F Rasmussen <atgeirr@sintef.no>
+//            Halvor M Nilsen     <hnil@sintef.no>
+//            Bjørn Spjelkavik    <bsp@sintef.no>
+//
+// $Date$
+//
+// $Revision$
+//
+//===========================================================================
+
+/*
+
+This file is part of the eWoms project.
+
+eWoms is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+eWoms is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+#include "geometryhelpers.hh"

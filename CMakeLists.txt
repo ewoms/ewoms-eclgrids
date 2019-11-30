@@ -1,120 +1,63 @@
-# -*- mode: cmake; tab-width: 2; indent-tabs-mode: t; truncate-lines: t; compile-command: "cmake -Wdev" -*-
+# -*- mode: cmake; tab-width: 2; indent-tabs-mode: t; truncate-lines: t
 # vim: set filetype=cmake autoindent tabstop=2 shiftwidth=2 noexpandtab softtabstop=2 nowrap:
+cmake_minimum_required(VERSION 3.10)
 
-###########################################################################
-#                                                                         #
-# Note: The bulk of the build system is located in the cmake/ directory.  #
-#       This file only contains the specializations for this particular   #
-#       project. Most likely you are interested in editing one of these   #
-#       files instead:                                                    #
-#                                                                         #
-#       dune.module                              Name and version number  #
-#       CMakeLists_files.cmake                   Path of source files     #
-#       cmake/Modules/${project}-prereqs.cmake   Dependencies             #
-#                                                                         #
-###########################################################################
+# set up project and specify the minimum cmake version
+project("ewoms-eclgrids" C CXX)
 
-# Mandatory call to project
-project(opm-grid C CXX)
+# find the build system (i.e., ewoms-common) and set cmake's module path
+find_package(ewoms-common REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${ewoms-common_MODULE_PATH})
 
-cmake_minimum_required (VERSION 2.8)
-# project information is in dune.module. Read this file and set variables.
-# we cannot generate dune.module since it is read by dunecontrol before
-# the build starts, so it makes sense to keep the data there then.
+# include the eWoms cmake macros
+include(EwomsMacros)
 
-option(SIBLING_SEARCH "Search for other modules in sibling directories?" ON)
+# do most of the book-keeping required
+ewoms_project()
 
-if(SIBLING_SEARCH AND NOT opm-common_DIR)
-  # guess the sibling dir
-  get_filename_component(_leaf_dir_name ${PROJECT_BINARY_DIR} NAME)
-  get_filename_component(_parent_full_dir ${PROJECT_BINARY_DIR} DIRECTORY)
-  get_filename_component(_parent_dir_name ${_parent_full_dir} NAME)
-  #Try if <module-name>/<build-dir> is used
-  get_filename_component(_modules_dir ${_parent_full_dir} DIRECTORY)
-  if(IS_DIRECTORY ${_modules_dir}/opm-common/${_leaf_dir_name})
-    set(opm-common_DIR ${_modules_dir}/opm-common/${_leaf_dir_name})
-  else()
-    string(REPLACE ${PROJECT_NAME} opm-common _opm_common_leaf ${_leaf_dir_name})
-    message("_opm_common_leaf=${_opm_common_leaf}")
-    if(NOT _leaf_dir_name STREQUAL _opm_common_leaf
-        AND IS_DIRECTORY ${_parent_full_dir}/${_opm_common_leaf})
-      # We are using build directories named <prefix><module-name><postfix>
-      set(opm-common_DIR ${_parent_full_dir}/${_opm_common_leaf})
-    elseif(IS_DIRECTORY ${_parent_full_dir}/opm-common)
-      # All modules are in a common build dir
-      set(opm-common_DIR "${_parent_full_dir}/opm-common")
-    endif()
-  endif()
-endif()
-if(opm-common_DIR AND NOT IS_DIRECTORY ${opm-common_DIR})
-  message(WARNING "Value ${opm-common_DIR} passed to variable"
-    " opm-common_DIR is not a directory")
-endif()
+# find the packages needed to compile the module
+find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-find_package(opm-common REQUIRED)
+# we want all features detected by the build system to be enabled,
+# thank you!
+dune_enable_all_packages()
 
-include(OpmInit)
+# add source files from CMakeLists_files.cmake to
+# library libewomsgrid.a and create executables
+ewoms_recursive_add_library("ewomseclgrids" "ewoms/eclgrids")
 
-# not the same location as most of the other projects? this hook overrides
-macro (dir_hook)
-endmacro (dir_hook)
+# recursively mark all header files beneath the "ewoms" directory for
+# installation.
+ewoms_recusive_export_all_headers("ewoms")
 
-# project information is in dune.module. Read this file and set variables.
-# we cannot generate dune.module since it is read by dunecontrol before
-# the build starts, so it makes sense to keep the data there then.
-include (OpmInit)
+# deal with the data required by the unit tests
+ewoms_recusive_copy_testdata_to_builddir("tests/*.data" "tests/*.DATA")
 
-# list of prerequisites for this particular project; this is in a
-# separate file (in cmake/Modules sub-directory) because it is shared
-# with the find module
-include (${project}-prereqs)
+ewoms_add_test(cartgrid SOURCES tests/test_cartgrid.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(cpgrid SOURCES tests/test_cpgrid.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(column_extract SOURCES tests/test_column_extract.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(distribution SOURCES tests/cpgrid/distribution_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(entityrep SOURCES tests/cpgrid/entityrep_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(entity SOURCES tests/cpgrid/entity_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(facetag SOURCES tests/cpgrid/facetag_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(geometry SOURCES tests/cpgrid/geometry_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(orientedentitytable SOURCES tests/cpgrid/orientedentitytable_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(partition_iterator SOURCES tests/cpgrid/partition_iterator_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(zoltan SOURCES tests/cpgrid/zoltan_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(geom2d SOURCES tests/test_geom2d.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(gridutilities SOURCES tests/test_gridutilities.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(minpvprocessor SOURCES tests/test_minpvprocessor.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(polyhedralgrid SOURCES tests/test_polyhedralgrid.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(p2pcommunicator SOURCES tests/p2pcommunicator_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(repairzcorn SOURCES tests/test_repairzcorn.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(sparsetable SOURCES tests/test_sparsetable.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(quadratures SOURCES tests/test_quadratures.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(compressed_cartesian_mapping SOURCES tests/test_compressed_cartesian_mapping.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(regionmapping SOURCES tests/test_regionmapping.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(ug SOURCES tests/test_ug.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(grid_nnc SOURCES tests/cpgrid/grid_nnc.cc LIBRARIES "${Boost_LIBRARIES}")
 
-# read the list of components from this file (in the project directory);
-# it should set various lists with the names of the files to include
-include (CMakeLists_files.cmake)
+ewoms_recusive_copy_testdata("tests/*.DATA" "tests/*.data")
 
-macro (config_hook)
-	opm_need_version_of ("dune-common")
-	opm_need_version_of ("dune-geometry")
-	opm_need_version_of ("dune-grid")
-	find_file(_HAVE_DUNE_GRID_CHECKS checkpartition.cc HINTS ${dune-grid_INCLUDE_DIR}
-		PATH_SUFFIXES dune/grid/test)
-	if(_HAVE_DUNE_GRID_CHECKS)
-		set(HAVE_DUNE_GRID_CHECKS 1)
-	else(_HAVE_DUNE_GRID_CHECK)
-		set(HAVE_DUNE_GRID_CHECKS 0)
-  endif(_HAVE_DUNE_GRID_CHECKS)
-	list (APPEND ${project}_CONFIG_IMPL_VARS
-		HAVE_DUNE_GRID_CHECKS
-		)
-	if(NOT ZOLTAN_FOUND AND MPI_C_FOUND)
-		message(SEND_ERROR "opm-grid with MPI support requires the package ZOLTAN."
-			"Please install it (e.g. from http://www.cs.sandia.gov/zoltan/.)")
-	endif(NOT ZOLTAN_FOUND AND MPI_C_FOUND)
-endmacro (config_hook)
-
-macro (prereqs_hook)
-endmacro (prereqs_hook)
-
-macro (sources_hook)
-endmacro (sources_hook)
-
-macro (fortran_hook)
-endmacro (fortran_hook)
-
-macro (files_hook)
-endmacro (files_hook)
-
-macro (tests_hook)
-endmacro (tests_hook)
-
-# all setup common to the OPM library modules is done here
-include (OpmLibMain)
-
-# Additional parallel tests
-if(MPI_FOUND)
-  if(NOT MPIEXEC_EXECUTABLE)
-    set(MPIEXEC_EXECUTABLE ${MPIEXEC})
-  endif()
-  add_test(distribution_test_parallel ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 4 bin/distribution_test)
-endif()
+# finalize the eWoms project, e.g. generating config.h etc.
+finalize_ewoms_project()
