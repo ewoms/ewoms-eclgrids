@@ -26,6 +26,7 @@
 #include <ewoms/eclio/parser/deck/deckrecord.hh>
 #include <ewoms/eclio/parser/eclipsestate/schedule/well/wellconnections.hh>
 #include <ewoms/eclio/parser/eclipsestate/schedule/well/well.hh>
+#include <ewoms/eclio/utility/activegridcells.hh>
 
 namespace Dune {
     namespace cpgrid {
