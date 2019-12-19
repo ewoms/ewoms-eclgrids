@@ -255,13 +255,14 @@ namespace Dune
 #if HAVE_ECL_INPUT
         /// Read the Eclipse grid format ('grdecl').
         /// \param ecl_grid the high-level object from ewoms-eclio which represents the simulation's grid
+        ///        In a parallel run this may be a nullptr on all ranks but rank zero.
         /// \param periodic_extension if true, the grid will be (possibly) refined, so that
         ///        intersections/faces along i and j boundaries will match those on the other
         ///        side. That is, i- faces will match i+ faces etc.
         /// \param turn_normals if true, all normals will be turned. This is intended for handling inputs with wrong orientations.
         /// \param clip_z if true, the grid will be clipped so that the top and bottom will be planar.
         /// \param poreVolume pore volumes for use in MINPV processing, if asked for in deck
-        void processEclipseFormat(const Ewoms::EclipseGrid& ecl_grid, bool periodic_extension, bool turn_normals = false, bool clip_z = false,
+        void processEclipseFormat(const Ewoms::EclipseGrid* ecl_grid, bool periodic_extension, bool turn_normals = false, bool clip_z = false,
                                   const std::vector<double>& poreVolume = std::vector<double>(),
                                   const Ewoms::NNC& = Ewoms::NNC());
 #endif
