@@ -52,13 +52,14 @@
 #include <dune/istl/owneroverlapcopy.hh>
 #endif
 
-#include <dune/common/parallel/collectivecommunication.hh>
 #include <dune/common/parallel/indexset.hh>
 #include <dune/common/parallel/interface.hh>
 #include <dune/common/parallel/plocalindex.hh>
 #if DUNE_VERSION_NEWER(DUNE_GRID, 2, 7)
+#include <dune/common/parallel/communication.hh>
 #include <dune/common/parallel/variablesizecommunicator.hh>
 #else
+#include <dune/common/parallel/collectivecommunication.hh>
 #include <ewoms/eclgrids/utility/variablesizecommunicator.hh>
 #endif
 #include <dune/grid/common/gridenums.hh>

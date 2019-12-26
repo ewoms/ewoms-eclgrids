@@ -26,7 +26,13 @@
 #include "mpi.h"
 #endif
 
+#include <dune/common/version.hh>
+
+#if DUNE_VERSION_NEWER(DUNE_COMMON, 2,7)
+#include <dune/common/parallel/mpicommunication.hh>
+#else
 #include <dune/common/parallel/mpicollectivecommunication.hh>
+#endif
 
 #include <ewoms/eclgrids/utility/parserincludes.hh>
 
