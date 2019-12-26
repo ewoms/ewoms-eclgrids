@@ -43,7 +43,7 @@ ewoms_add_test(facetag SOURCES tests/cpgrid/facetag_test.cc LIBRARIES "${Boost_L
 ewoms_add_test(geometry SOURCES tests/cpgrid/geometry_test.cc LIBRARIES "${Boost_LIBRARIES}")
 ewoms_add_test(orientedentitytable SOURCES tests/cpgrid/orientedentitytable_test.cc LIBRARIES "${Boost_LIBRARIES}")
 ewoms_add_test(partition_iterator SOURCES tests/cpgrid/partition_iterator_test.cc LIBRARIES "${Boost_LIBRARIES}")
-ewoms_add_test(zoltan SOURCES tests/cpgrid/zoltan_test.cc LIBRARIES "${Boost_LIBRARIES}")
+ewoms_add_test(zoltan_test SOURCES tests/cpgrid/zoltan_test.cc LIBRARIES "${Boost_LIBRARIES}")
 ewoms_add_test(geom2d SOURCES tests/test_geom2d.cc LIBRARIES "${Boost_LIBRARIES}")
 ewoms_add_test(gridutilities SOURCES tests/test_gridutilities.cc LIBRARIES "${Boost_LIBRARIES}")
 ewoms_add_test(minpvprocessor SOURCES tests/test_minpvprocessor.cc LIBRARIES "${Boost_LIBRARIES}")
