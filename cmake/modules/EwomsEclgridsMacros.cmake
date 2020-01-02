@@ -6,6 +6,7 @@
 
 find_package(Zoltan)
 if(Zoltan_FOUND)
+  set(HAVE_ZOLTAN 1)
   dune_register_package_flags(
     LIBRARIES "${Zoltan_LIBRARIES}"
     INCLUDE_DIRS "${Zoltan_INCLUDE_DIRS}")
