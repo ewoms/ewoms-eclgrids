@@ -4,9 +4,8 @@
 # suggests ewoms-eclgrids!
 #
 
-find_package(Zoltan)
+find_package(ZoltanEwoms)
 if(Zoltan_FOUND)
-  set(HAVE_ZOLTAN 1)
   dune_register_package_flags(
     LIBRARIES "${Zoltan_LIBRARIES}"
     INCLUDE_DIRS "${Zoltan_INCLUDE_DIRS}")
