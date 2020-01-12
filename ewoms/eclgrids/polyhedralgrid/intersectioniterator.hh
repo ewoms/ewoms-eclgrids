@@ -27,7 +27,13 @@ namespace Dune
     typedef typename std::conditional< isLeafIntersection,
                                   typename Traits :: LeafIntersection,
                                   typename Traits :: LevelIntersection > :: type  Intersection ;
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,6)
     typedef typename Intersection :: Implementation IntersectionImpl ;
+#else
+    typedef typename std::conditional< isLeafIntersection,
+                                  typename Traits :: LeafIntersectionImpl,
+                                  typename Traits :: LevelIntersectionImpl > :: type  IntersectionImpl ;
+#endif
 
     typedef typename Traits :: ExtraData ExtraData;
 
