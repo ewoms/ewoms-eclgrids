@@ -1065,7 +1065,7 @@ void VariableSizeCommunicator<Allocator>::communicateFixedSize(DataHandle& handl
   std::vector<MPI_Request> data_recv_req(interface_->size(), MPI_REQUEST_NULL);
   typedef typename DataHandle::DataType DataType;
   std::vector<MessageBuffer<DataType> > send_buffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_)),
-    recv_buffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_));
+    recvBuffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_));
 
   setupRequests(handle, send_trackers, send_buffers, data_send_req,
                 SetupSendRequest<DataHandle>(), communicator_);
@@ -1087,7 +1087,7 @@ void VariableSizeCommunicator<Allocator>::communicateFixedSize(DataHandle& handl
     // Receive the fixedsize and setup receives accordingly
     if(no_size_to_recv)
       no_size_to_recv -= receiveSizeAndSetupReceive(handle,recv_trackers, size_recv_req,
-                                                  data_recv_req, recv_buffers,
+                                                  data_recv_req, recvBuffers,
                                                   communicator_);
 
     // Check send completion and initiate other necessary sends
@@ -1097,7 +1097,7 @@ void VariableSizeCommunicator<Allocator>::communicateFixedSize(DataHandle& handl
     if(validRecvRequests(data_recv_req))
       // Receive data and setup new unblocking receives if necessary
       no_to_recv -= checkReceiveAndContinueReceiving(handle, recv_trackers, data_recv_req,
-                                                     recv_buffers, communicator_);
+                                                     recvBuffers, communicator_);
   }
 
   // Wait for completion of sending the size.
@@ -1118,12 +1118,12 @@ void VariableSizeCommunicator<Allocator>::communicateSizes(DataHandle& handle,
   std::vector<MPI_Request> recv_requests(size, MPI_REQUEST_NULL);
   std::vector<MessageBuffer<std::size_t> >
     send_buffers(size, MessageBuffer<std::size_t>(maxBufferSize_)),
-    recv_buffers(size, MessageBuffer<std::size_t>(maxBufferSize_));
+    recvBuffers(size, MessageBuffer<std::size_t>(maxBufferSize_));
   SizeDataHandle<DataHandle> size_handle(handle,data_recv_trackers);
   setupInterfaceTrackers<FORWARD>(size_handle,send_trackers, recv_trackers);
   setupRequests(size_handle, send_trackers, send_buffers, send_requests,
                                 SetupSendRequest<SizeDataHandle<DataHandle> >(), communicator_);
-  setupRequests(size_handle, recv_trackers, recv_buffers, recv_requests,
+  setupRequests(size_handle, recv_trackers, recvBuffers, recv_requests,
                 SetupRecvRequest<SizeDataHandle<DataHandle> >(), communicator_);
 
   // Count valid requests that we have to wait for.
@@ -1147,7 +1147,7 @@ void VariableSizeCommunicator<Allocator>::communicateSizes(DataHandle& handle,
       // uses std::copy.
       size_to_recv -=
         checkAndContinue(size_handle, recv_trackers, recv_requests, recv_requests,
-                         recv_buffers, communicator_, UnpackSizeEntries<DataHandle>(),
+                         recvBuffers, communicator_, UnpackSizeEntries<DataHandle>(),
                          SetupRecvRequest<SizeDataHandle<DataHandle> >());
   }
 }
@@ -1166,13 +1166,13 @@ void VariableSizeCommunicator<Allocator>::communicateVariableSize(DataHandle& ha
   typedef typename DataHandle::DataType DataType;
   std::vector<MessageBuffer<DataType> >
     send_buffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_)),
-    recv_buffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_));
+    recvBuffers(interface_->size(), MessageBuffer<DataType>(maxBufferSize_));
 
   communicateSizes<FORWARD>(handle, recv_trackers);
   // Setup requests for sending and receiving.
   setupRequests(handle, send_trackers, send_buffers, send_requests,
                 SetupSendRequest<DataHandle>(), communicator_);
-  setupRequests(handle, recv_trackers, recv_buffers, recv_requests,
+  setupRequests(handle, recv_trackers, recvBuffers, recv_requests,
                 SetupRecvRequest<DataHandle>(), communicator_);
 
   // Determine number of valid requests.
@@ -1192,7 +1192,7 @@ void VariableSizeCommunicator<Allocator>::communicateVariableSize(DataHandle& ha
     if(no_to_recv)
       // Receive data and setup new unblocking receives if necessary
       no_to_recv -= checkReceiveAndContinueReceiving(handle, recv_trackers, recv_requests,
-                                                     recv_buffers, communicator_);
+                                                     recvBuffers, communicator_);
   }
 }
 

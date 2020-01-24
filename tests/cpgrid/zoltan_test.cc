@@ -37,14 +37,14 @@ public:
 };
 
 #ifdef HAVE_MPI
-void MPI_err_handler(MPI_Comm *, int *err_code, ...){
-  char *err_string=new char[MPI_MAX_ERROR_STRING];
-  int err_length;
-  MPI_Error_string(*err_code, err_string, &err_length);
-  std::string s(err_string, err_length);
+void mpiErrorHandler(MPI_Comm *, int *errCode, ...){
+  char *errString=new char[MPI_MAX_ERROR_STRING];
+  int errLength;
+  MPI_Error_string(*errCode, errString, &errLength);
+  std::string s(errString, errLength);
   std::cerr << "An MPI Error ocurred:"<<std::endl<<s<<std::endl;
-  delete[] err_string;
-  throw MPIError(s, *err_code);
+  delete[] errString;
+  throw MPIError(s, *errCode);
 }
 #endif
 
@@ -93,10 +93,10 @@ BOOST_AUTO_TEST_CASE(zoltan)
 
         MPI_Errhandler handler;
 #ifdef MPI_2
-        MPI_Comm_create_errhandler(MPI_err_handler, &handler);
+        MPI_Comm_create_errhandler(mpiErrorHandler, &handler);
         MPI_Comm_set_errhandler(MPI_COMM_WORLD, handler);
 #else
-        MPI_Errhandler_create(MPI_err_handler, &handler);
+        MPI_Errhandler_create(mpiErrorHandler, &handler);
         MPI_Errhandler_set(MPI_COMM_WORLD, handler);
 #endif
         MPI_Comm_size(MPI_COMM_WORLD, &procs);
