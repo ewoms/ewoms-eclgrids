@@ -295,24 +295,6 @@ namespace Dune
       return data()->hasBoundaryIntersections( this->seed() );
     }
 
-#if ! DUNE_VERSION_NEWER(DUNE_GRID,2,4)
-    LeafIntersectionIterator ibegin () const
-    {
-      return LeafIntersectionIterator( LeafIntersectionIteratorImpl( data(), seed_, true ) );
-    }
-
-    LeafIntersectionIterator iend () const
-    {
-      return LeafIntersectionIterator( LeafIntersectionIteratorImpl( data(), seed_, false ) );
-    }
-
-    LeafIntersectionIterator  ileafbegin  () const { return ibegin(); }
-    LevelIntersectionIterator ilevelbegin () const { return ibegin(); }
-
-    LeafIntersectionIterator  ileafend  () const { return iend(); }
-    LevelIntersectionIterator ilevelend () const { return iend(); }
-#endif
-
     bool isLeaf () const
     {
       return true;

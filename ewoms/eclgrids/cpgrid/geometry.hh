@@ -40,12 +40,7 @@
 #include <dune/geometry/referenceelements.hh>
 #include <dune/grid/common/geometry.hh>
 
-#if DUNE_VERSION_NEWER(DUNE_GEOMETRY, 2, 5 )
 #include <dune/geometry/type.hh>
-#else
-#include <dune/geometry/genericgeometry/geometrytraits.hh>
-#include <dune/geometry/genericgeometry/matrixhelper.hh>
-#endif
 
 #include <ewoms/eclgrids/cpgrid/entityrep.hh>
 
@@ -226,11 +221,7 @@ namespace Dune
             /// Type of the inverse of the transposed Jacobian matrix
             typedef FieldMatrix< ctype, coorddimension, mydimension >         JacobianInverseTransposed;
 
-#if DUNE_VERSION_NEWER(DUNE_GRID,2,5)
             typedef Dune::Impl::FieldMatrixHelper< double >  MatrixHelperType;
-#else
-            typedef Dune::GenericGeometry::MatrixHelper< Dune::GenericGeometry::DuneCoordTraits<double> >  MatrixHelperType;
-#endif
 
             /// @brief Construct from centroid, volume (1- and 0-moments) and
             ///        corners.

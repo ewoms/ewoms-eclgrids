@@ -13,7 +13,12 @@
 
 //- dune-grid includes
 #include <dune/grid/common/grid.hh>
+
+#if DUNE_VERSION_NEWER(DUNE_COMMON, 2, 7)
+#include <dune/common/parallel/communication.hh>
+#else
 #include <dune/common/parallel/collectivecommunication.hh>
+#endif
 
 //- polyhedralgrid includes
 #include <ewoms/eclgrids/polyhedralgrid/capabilities.hh>
@@ -87,13 +92,8 @@ namespace Dune
         typedef PolyhedralGridEntity< codim, dimension, const Grid > EntityImpl;
         typedef Dune::Entity< codim, dimension, const Grid, PolyhedralGridEntity > Entity;
 
-#if DUNE_VERSION_NEWER(DUNE_GRID,2,4)
         typedef EntityImpl EntityPointerImpl;
         typedef Entity     EntityPointer;
-#else
-        typedef PolyhedralGridEntityPointer< codim, const Grid > EntityPointerImpl;
-        typedef Dune::EntityPointer< const Grid, EntityPointerImpl > EntityPointer;
-#endif
 
         //typedef Dune::EntitySeed< const Grid, PolyhedralGridEntitySeed< codim, const Grid > > EntitySeed;
         typedef PolyhedralGridEntitySeed< codim, const Grid > EntitySeed;
