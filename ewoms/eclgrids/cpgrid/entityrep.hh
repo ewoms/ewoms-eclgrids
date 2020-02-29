@@ -65,7 +65,6 @@ namespace Dune
 //#include <ewoms/eclsimulators/deprecated/utility/sparsetable.hh>
 #include <ewoms/eclgrids/utility/errormacros.hh>
 #include <climits>
-//#include <boost/algorithm/minmax_element.hpp>
 #include <vector>
 
 /// The namespace Dune is the main namespace for all Dune code.

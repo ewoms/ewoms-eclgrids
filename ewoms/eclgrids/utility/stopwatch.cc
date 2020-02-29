@@ -33,7 +33,6 @@
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <ewoms/eclgrids/utility/stopwatch.hh>
 #include <ewoms/eclgrids/utility/errormacros.hh>
 
