@@ -18,6 +18,8 @@
 #ifndef DUNE_CORNERPOINT_GRIDHELPERS_HH
 #define DUNE_CORNERPOINT_GRIDHELPERS_HH
 
+#include <functional>
+
 #include <ewoms/eclgrids/gridhelpers.hh>
 #include <ewoms/eclgrids/utility/parserincludes.hh>
 
