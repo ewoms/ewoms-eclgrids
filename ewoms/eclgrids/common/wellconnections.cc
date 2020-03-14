@@ -22,7 +22,7 @@
 #include <map>
 
 #include <ewoms/eclgrids/common/wellconnections.hh>
-
+#include <ewoms/eclgrids/cpgrid/cpgriddata.hh>
 #include <ewoms/eclgrids/utility/parserincludes.hh>
 
 #include <dune/common/parallel/mpitraits.hh>
@@ -112,7 +112,7 @@ postProcessPartitioningForWells(std::vector<int>& parts,
 
 #if HAVE_ECL_INPUT
     std::map<int, std::vector<int>> addCells, removeCells;
-    using AttributeSet = Dune::OwnerOverlapCopyAttributeSet::AttributeSet;
+    using AttributeSet = CpGridData::AttributeSet;
 
     if (noCells && well_connections.size()) {
 

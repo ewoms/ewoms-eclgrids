@@ -132,7 +132,7 @@ public:
                           const std::vector<EwomsEclWellType> * wells,
                           const double* transmissibilities,
                           bool pretendEmptyGrid,
-			  EdgeWeightMethod edgeWeightsMethod);
+                          EdgeWeightMethod edgeWeightsMethod);
 
     /// \brief Access the grid.
     const Dune::CpGrid& getGrid() const
@@ -152,7 +152,7 @@ public:
 
     double logTransmissibilityWeights(int face_index) const
     {
-        double trans = transmissibilities_[face_index];
+        double trans = transmissibilities_ ?  transmissibilities_[face_index] : 1;
         return trans == 0.0 ? 0.0 : 1.0 + std::log(trans) - log_min_;
     }
 
@@ -194,18 +194,23 @@ private:
 
     void findMaxMinTrans()
     {
-	double min_val = std::numeric_limits<float>::max();
+        double min_val = std::numeric_limits<float>::max();
 
-	for (int face = 0; face < getGrid().numFaces(); ++face)
-	{
-	    double trans = transmissibilities_[face];
-	    if (trans > 0)
-	    {
-		if (trans < min_val)
-		    min_val = trans;
-	    }
-	}
-	log_min_ = std::log(min_val);
+        if (transmissibilities_) {
+            for (int face = 0; face < getGrid().numFaces(); ++face)
+            {
+                double trans = transmissibilities_[face];
+                if (trans > 0)
+                {
+                    if (trans < min_val)
+                        min_val = trans;
+                }
+            }
+            log_min_ = std::log(min_val);
+        }
+        else {
+            log_min_ = 0.0;
+        }
     }
 
     const Dune::CpGrid& grid_;

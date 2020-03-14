@@ -19,8 +19,8 @@
 #include <config.h>
 #endif
 #include <ewoms/eclgrids/common/zoltanpartition.hh>
-
 #include <ewoms/eclgrids/utility/parserincludes.hh>
+#include <ewoms/eclgrids/cpgrid/cpgriddata.hh>
 
 #if defined(HAVE_ZOLTAN) && defined(HAVE_MPI)
 namespace Dune
@@ -75,7 +75,7 @@ zoltanGraphPartitionGridOnRoot(const CpGrid& cpgrid,
                                                        wells,
                                                        transmissibilities,
                                                        partitionIsEmpty,
-						       edgeWeightsMethod));
+                                                       edgeWeightsMethod));
         Dune::cpgrid::setCpGridZoltanGraphFunctions(zz, *grid_and_wells,
                                                     partitionIsEmpty);
     }
@@ -109,7 +109,7 @@ zoltanGraphPartitionGridOnRoot(const CpGrid& cpgrid,
     std::vector<std::tuple<int,int,char,int>>myImportList(numImport);
     myExportList.reserve(1.2*myExportList.size());
     myImportList.reserve(1.2*myImportList.size());
-    using AttributeSet = Dune::OwnerOverlapCopyAttributeSet::AttributeSet;
+    using AttributeSet = CpGridData::AttributeSet;
 
     for ( int i=0; i < numExport; ++i )
     {

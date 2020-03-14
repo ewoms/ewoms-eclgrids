@@ -91,7 +91,7 @@ namespace cpgrid
 
 class IndexSet;
 class IdSet;
-class GlobalIdSet;
+class LevelGlobalIdSet;
 class PartitionTypeIndicator;
 template<int,int> class Geometry;
 template<int> class Entity;
@@ -109,6 +109,8 @@ template<class T, int i> struct Mover;
 class CpGridData
 {
     template<class T, int i> friend struct mover::Mover;
+
+    friend class GlobalIdSet;
 
 private:
     CpGridData(const CpGridData& g);
@@ -290,6 +292,14 @@ public:
     using InterfaceMap = Communicator::InterfaceMap;
 #endif
 
+#ifdef HAVE_DUNE_ISTL
+    /// \brief The type of the set of the attributes
+    typedef Dune::OwnerOverlapCopyAttributeSet::AttributeSet AttributeSet;
+#else
+    /// \brief The type of the set of the attributes
+    enum AttributeSet{owner, overlap, copy};
+#endif
+
 private:
 
     /// \brief Adds entries to the parallel index set of the cells during grid construction
@@ -412,10 +422,10 @@ private:
     cpgrid::EntityVariable<int, 1> unique_boundary_ids_;
     /** @brief The index set of the grid (level). */
     cpgrid::IndexSet* index_set_;
-    /** @brief The local id set. */
+    /** @brief The internal local id set (not exported). */
     const cpgrid::IdSet* local_id_set_;
-    /** @brief The global id set. */
-    GlobalIdSet* global_id_set_;
+    /** @brief The global id set (used also as local id set). */
+    LevelGlobalIdSet* global_id_set_;
     /** @brief The indicator of the partition type of the entities */
     PartitionTypeIndicator* partition_type_indicator_;
 
@@ -434,13 +444,6 @@ private:
     /// the zcorn values will typically be modified, and we retain a
     /// copy here to be able to create an EclipseGrid for output.
     std::vector<double> zcorn;
-
-#ifdef HAVE_DUNE_ISTL
-    typedef Dune::OwnerOverlapCopyAttributeSet::AttributeSet AttributeSet;
-#else
-    /// \brief The type of the set of the attributes
-    enum AttributeSet{owner, overlap, copy};
-#endif
 
 #if HAVE_MPI
 

@@ -52,6 +52,7 @@ namespace Dune
        class IntersectionIterator;
        class HierarchicIterator;
        class CpGridData;
+       class LevelGlobalIdSet;
 
         /// @brief
         /// @todo Doc me!
@@ -64,6 +65,9 @@ namespace Dune
         template <int codim>
         class Entity : public EntityRep<codim>
         {
+            friend class LevelGlobalIdSet;
+            friend class GlobalIdSet;
+
         public:
         /// @brief
         /// @todo Doc me!
@@ -273,6 +277,7 @@ namespace Dune
         template <int codim>
         class EntityPointer : public cpgrid::Entity<codim>
         {
+            friend class LevelGlobalIdSet;
         public:
             typedef cpgrid::Entity<codim> Entity;
             typedef const Entity& Reference;
