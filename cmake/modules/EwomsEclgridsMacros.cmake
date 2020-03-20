@@ -11,6 +11,4 @@ if(Zoltan_FOUND)
     INCLUDE_DIRS "${Zoltan_INCLUDE_DIRS}")
 endif()
 
-find_package(Boost
-  COMPONENTS filesystem system date_time
-  REQUIRED)
+find_package(Boost REQUIRED)
