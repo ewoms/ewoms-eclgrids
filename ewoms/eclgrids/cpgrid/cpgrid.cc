@@ -129,8 +129,11 @@ namespace Dune
     {}
 
 std::pair<bool, std::unordered_set<std::string> >
-CpGrid::scatterGrid(EdgeWeightMethod method, bool ownersFirst, const std::vector<cpgrid::EwomsEclWellType> * wells,
-                    const double* transmissibilities, bool addCornerCells, int overlapLayers)
+CpGrid::scatterGrid(EdgeWeightMethod method,
+                    [[maybe_unused]] bool ownersFirst,
+                    const std::vector<cpgrid::EwomsEclWellType> * wells,
+                    const double* transmissibilities,
+                    [[maybe_unused]] bool addCornerCells, int overlapLayers)
 {
     // Silence any unused argument warnings that could occur with various configurations.
     static_cast<void>(wells);
