@@ -11,7 +11,6 @@
 #include <ewoms/eclgrids/cpgrid/dgfparser.hh>
 
 #define DISABLE_DEPRECATED_METHOD_CHECK 1
-using Dune::referenceElement; //grid check assume usage of Dune::Geometry
 #include <dune/grid/test/gridcheck.hh>
 
 // Re-enable warnings.
@@ -98,7 +97,12 @@ void testGrid(Grid& grid, const std::string& name, const size_t nElem, const siz
     testGridIteration( grid.leafGridView(), nElem );
 
     std::cout << "create vertex mapper\n";
-  Dune::MultipleCodimMultipleGeomTypeMapper<GridView> mapper(grid.leafGridView(), Dune::mcmgVertexLayout());
+
+#if DUNE_VERSION_NEWER(DUNE_COMMON, 2, 6)
+    Dune::MultipleCodimMultipleGeomTypeMapper<GridView> mapper(grid.leafGridView(), Dune::mcmgVertexLayout());
+#else
+    Dune::MultipleCodimMultipleGeomTypeMapper<GridView, Dune::MCMGVertexLayout> mapper(grid.leafGridView());
+#endif
 
     std::cout << "VertexMapper.size(): " << mapper.size() << "\n";
     if (static_cast<size_t>(mapper.size()) != nVertices ) {

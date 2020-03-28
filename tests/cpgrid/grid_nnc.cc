@@ -41,7 +41,11 @@ namespace std
     }
 }
 
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,6)
 using ElementMapper = Dune::MultipleCodimMultipleGeomTypeMapper<Dune::CpGrid::LeafGridView>;
+#else
+using ElementMapper = Dune::MultipleCodimMultipleGeomTypeMapper<Dune::CpGrid::LeafGridView, Dune::MCMGElementLayout >;
+#endif
 
 struct Fixture
 {
@@ -73,7 +77,11 @@ struct Fixture
         Dune::CpGrid grid;
         grid.processEclipseFormat(&es.getInputGrid(), false, false, false, porv, nnc);
         const auto& gv = grid.leafGridView();
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,6)
         ElementMapper elmap(gv, Dune::mcmgElementLayout());
+#else
+        ElementMapper elmap(gv);
+#endif
         int elemcount = 0;
         int intercount = 0;
         int bdycount = 0;
