@@ -32,16 +32,16 @@
 /* end private */
 
 /* Define to the version of ewoms-eclgrids */
-#define EWOMS_GRID_VERSION "${EWOMS_GRID_VERSION}"
+#define EWOMS_ECLGRIDS_VERSION "${EWOMS_ECLGRIDS_VERSION}"
 
 /* Define to the major version of ewoms-eclgrids */
-#define EWOMS_GRID_VERSION_MAJOR ${EWOMS_GRID_VERSION_MAJOR}
+#define EWOMS_ECLGRIDS_VERSION_MAJOR ${EWOMS_ECLGRIDS_VERSION_MAJOR}
 
 /* Define to the minor version of ewoms-eclgrids */
-#define EWOMS_GRID_VERSION_MINOR ${EWOMS_GRID_VERSION_MINOR}
+#define EWOMS_ECLGRIDS_VERSION_MINOR ${EWOMS_ECLGRIDS_VERSION_MINOR}
 
 /* Define to the revision of ewoms-eclgrids */
-#define EWOMS_GRID_VERSION_REVISION ${EWOMS_GRID_VERSION_REVISION}
+#define EWOMS_ECLGRIDS_VERSION_REVISION ${EWOMS_ECLGRIDS_VERSION_REVISION}
 
 /* Specify whether the ZOLTAN graph partitioning library is available or not */
 #cmakedefine HAVE_ZOLTAN 1
