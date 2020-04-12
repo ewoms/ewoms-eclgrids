@@ -8,7 +8,6 @@
 
 #define BOOST_TEST_MODULE TEST_UG
 #include <boost/test/unit_test.hpp>
-#include <boost/test/tools/floating_point_comparison.hpp>
 
 /* --- our own headers --- */
 #include <algorithm>

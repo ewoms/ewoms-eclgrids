@@ -19,7 +19,6 @@
 
 #define BOOST_TEST_MODULE GeometryTests
 #include <boost/test/unit_test.hpp>
-#include <boost/test/tools/floating_point_comparison.hpp>
 #include <ewoms/eclgrids/cpgrid/geometry.hh>
 #include <ewoms/eclgrids/cpgrid/entityrep.hh>
 

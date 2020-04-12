@@ -5,5 +5,5 @@ Label: 2020.04-pre
 Maintainer: ewoms@ewoms.org
 MaintainerName: The eWoms Project
 Url: https://ewoms.org
-Depends: dune-common (>= 2.5) dune-geometry (>= 2.5) dune-grid (>= 2.5) ewoms-common ewoms-eclio
-Suggests: dune-istl (>= 2.5)
+Depends: dune-common (>= 2.4) dune-geometry (>= 2.4) dune-grid (>= 2.4) ewoms-common ewoms-eclio
+Suggests: dune-istl (>= 2.4)

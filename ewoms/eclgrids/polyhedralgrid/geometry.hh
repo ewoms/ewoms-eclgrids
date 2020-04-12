@@ -9,9 +9,15 @@
 #include <dune/common/fmatrix.hh>
 #include <dune/grid/common/geometry.hh>
 
+#if DUNE_VERSION_NEWER(DUNE_GEOMETRY, 2, 5 )
 #include <dune/geometry/referenceelements.hh>
 #include <dune/geometry/type.hh>
 #include <dune/geometry/multilineargeometry.hh>
+#else
+#include <dune/geometry/genericgeometry/geometrytraits.hh>
+#include <dune/geometry/genericgeometry/matrixhelper.hh>
+#include <dune/geometry/multilineargeometry.hh>
+#endif
 
 namespace Dune
 {
@@ -61,6 +67,7 @@ namespace Dune
           bool equals( const Iterator& other ) const { return count_ == other.count_; }
         };
 
+       
         ExtraData  data_;
         // host geometry object
         EntitySeed seed_;
@@ -81,6 +88,10 @@ namespace Dune
         Iterator begin() const { return Iterator(this, 0); }
         Iterator end ()  const { return Iterator(this, corners()); }
 
+#if ! DUNE_VERSION_NEWER(DUNE_GEOMETRY, 2,5)
+        typedef const Iterator const_iterator;
+#endif
+        
         int corners () const { return data()->corners( seed_ ); }
         GlobalCoordinate corner ( const int i ) const { return data()->corner( seed_, i ); }
         GlobalCoordinate center () const { return data()->centroids( seed_ ); }
@@ -109,7 +120,11 @@ namespace Dune
     //! type of jacobian transposed
     typedef FieldMatrix< ctype, mydim, cdim > JacobianTransposed;
 
+#if DUNE_VERSION_NEWER(DUNE_GRID,2,5)
     typedef Dune::Impl::FieldMatrixHelper< ctype >  MatrixHelperType;
+#else
+    typedef Dune::GenericGeometry::MatrixHelper< Dune::GenericGeometry::DuneCoordTraits< ctype > >  MatrixHelperType;
+#endif
 
     explicit PolyhedralGridBasicGeometry ( ExtraData data )
     : storage_( data )

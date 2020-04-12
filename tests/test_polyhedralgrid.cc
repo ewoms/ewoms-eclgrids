@@ -254,6 +254,7 @@ closure none\n \
 
 int main(int argc, char** argv )
 {
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,5) 
     // initialize MPI
     Dune::MPIHelper::instance( argc, argv );
 
@@ -335,5 +336,6 @@ int main(int argc, char** argv )
         Dune::GridPtr< Grid > gridPtr( dgfFile );
         gridcheck( *gridPtr );
     }
+#endif // at least Dune 2.5
     return 0;
 }
