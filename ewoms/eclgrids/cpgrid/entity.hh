@@ -38,6 +38,10 @@
 #include <dune/geometry/type.hh>
 #include <dune/grid/common/gridenums.hh>
 
+#if HAVE_DUNE_FEM
+#include <dune/fem/gridpart/common/gridpart.hh>
+#endif // HAVE_DUNE_FEM
+
 #include "partitiontypeindicator.hh"
 #include "entityrep.hh"
 
@@ -467,6 +471,24 @@ bool Entity<codim>::isValid() const
     return pgrid_ ? EntityRep<codim>::index() < pgrid_->size(codim) : false;
 }
 
-}}
+}
+
+#if HAVE_DUNE_FEM
+namespace Fem {
+template<int codim>
+struct GridEntityAccess<Dune::cpgrid::Entity<codim> >
+{
+    typedef Dune::cpgrid::Entity<codim> EntityType;
+    typedef Dune::cpgrid::Entity<codim> GridEntityType;
+
+    static const GridEntityType &gridEntity(const EntityType &entity)
+    {
+        return entity;
+    }
+};
+}
+#endif
+
+}
 
 #endif // EWOMS_ENTITY_HEADER
