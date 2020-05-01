@@ -771,7 +771,7 @@ struct UnpackSizeEntries{
  * @param[in] recv_trackers The trackers for the receiving side.
  * @param[out] recv_requests The request for the asynchronous receive operations.
  */
-[[maybe_unused]] void sendFixedSize(std::vector<InterfaceTracker>& send_trackers,
+inline [[maybe_unused]] void sendFixedSize(std::vector<InterfaceTracker>& send_trackers,
                                     std::vector<MPI_Request>& send_requests,
                                     std::vector<InterfaceTracker>& recv_trackers,
                                     std::vector<MPI_Request>& recv_requests,
@@ -989,7 +989,7 @@ std::size_t checkReceiveAndContinueReceiving(DataHandle& handle,
 #endif
 }
 
-[[maybe_unused]] bool validRecvRequests(const std::vector<MPI_Request> reqs)
+inline [[maybe_unused]] bool validRecvRequests(const std::vector<MPI_Request> reqs)
 {
   for(std::vector<MPI_Request>::const_iterator i=reqs.begin(), end=reqs.end();
       i!=end; ++i)
