@@ -245,11 +245,19 @@ CpGrid::scatterGrid(EdgeWeightMethod method,
                 << " active cells on " << cc.size() << " processes as follows:\n";
             ostr << "  rank   owned cells   overlap cells   total cells\n";
             ostr << "--------------------------------------------------\n";
-            for (int i = 0; i < cc.size(); ++i) {
-                ostr << std::setw(6) << i
-                    << std::setw(14) << cc_owned_cells[i]
-                    << std::setw(16) << cc_overlap_cells[i]
-                    << std::setw(14) << cc_total_cells[i] << "\n";
+            std::vector<int> sortedIndex(cc.size());
+            for (int i = 0; i < cc.size(); ++i)
+                sortedIndex[i] = i;
+            const auto cmpFn =
+                [&cc_total_cells](int i, int j)
+                { return cc_total_cells[i] > cc_total_cells[j]; };
+            std::sort(sortedIndex.begin(), sortedIndex.end(), cmpFn);
+            for (int i = 0; i < sortedIndex.size(); ++i) {
+                int rank = sortedIndex[i];
+                ostr << std::setw(6) << rank
+                    << std::setw(14) << cc_owned_cells[rank]
+                    << std::setw(16) << cc_overlap_cells[rank]
+                    << std::setw(14) << cc_total_cells[rank] << "\n";
             }
             ostr << "--------------------------------------------------\n";
             ostr << "   sum";
