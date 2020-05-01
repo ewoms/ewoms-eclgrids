@@ -529,8 +529,7 @@ private:
 };
 
 /** @} */
-namespace
-{
+
 /**
  *  @brief A data handle for comunicating the sizes of variable sized data.
  */
@@ -544,10 +543,15 @@ public:
                  std::vector<InterfaceTracker>& trackers)
     : data_(data), trackers_(trackers), index_()
   {}
+
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+  bool fixedSize()
+  { return true; }
+#else
   bool fixedsize()
-  {
-    return true;
-  }
+  { return true; }
+#endif
+
   std::size_t size(std::size_t i)
   {
     DUNE_UNUSED_PARAMETER(i);
@@ -974,9 +978,15 @@ std::size_t checkReceiveAndContinueReceiving(DataHandle& handle,
                                              std::vector<MessageBuffer<typename DataHandle::DataType> >& buffers,
                                              MPI_Comm comm)
 {
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+  return checkAndContinue(handle, trackers, requests, requests, buffers, comm,
+                          UnpackEntries<DataHandle>(), SetupRecvRequest<DataHandle>(),
+                          true, !handle.fixedSize());
+#else
   return checkAndContinue(handle, trackers, requests, requests, buffers, comm,
                           UnpackEntries<DataHandle>(), SetupRecvRequest<DataHandle>(),
                           true, !handle.fixedsize());
+#endif
 }
 
 [[maybe_unused]] bool validRecvRequests(const std::vector<MPI_Request> reqs)
@@ -1018,7 +1028,6 @@ std::size_t setupRequests(DataHandle& handle,
   }
   return complete;
 }
-} // end unnamed namespace
 
 template<class Allocator>
 template<bool FORWARD, class DataHandle>
@@ -1032,16 +1041,27 @@ void VariableSizeCommunicator<Allocator>::setupInterfaceTrackers(DataHandle& han
   recv_trackers.reserve(interface_->size());
 
   int fixedsize=0;
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+  if(handle.fixedSize())
+    ++fixedsize;
+#else
   if(handle.fixedsize())
     ++fixedsize;
+#endif
 
   typedef typename InterfaceMap::const_iterator IIter;
   for(IIter inf=interface_->begin(), end=interface_->end(); inf!=end; ++inf)
   {
 
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    if(handle.fixedSize() && InterfaceInformationChooser<FORWARD>::getSend(inf->second).size())
+      fixedsize=handle.size(InterfaceInformationChooser<FORWARD>::getSend(inf->second)[0]);
+    assert(!handle.fixedSize()||fixedsize>0);
+#else
     if(handle.fixedsize() && InterfaceInformationChooser<FORWARD>::getSend(inf->second).size())
       fixedsize=handle.size(InterfaceInformationChooser<FORWARD>::getSend(inf->second)[0]);
     assert(!handle.fixedsize()||fixedsize>0);
+#endif
     send_trackers.push_back(InterfaceTracker(inf->first,
                                              InterfaceInformationChooser<FORWARD>::getSend(inf->second), fixedsize));
     recv_trackers.push_back(InterfaceTracker(inf->first,
@@ -1205,7 +1225,11 @@ void VariableSizeCommunicator<Allocator>::communicate(DataHandle& handle)
     // either for MPI_Wait_all or MPI_Test_some.
     return;
 
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+  if(handle.fixedSize())
+#else
   if(handle.fixedsize())
+#endif
     communicateFixedSize<FORWARD>(handle);
   else
     communicateVariableSize<FORWARD>(handle);

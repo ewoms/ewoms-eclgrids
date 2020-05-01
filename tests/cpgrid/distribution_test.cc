@@ -68,16 +68,24 @@ public:
           dist_cell_ids_(dist_cell_ids)
     {}
     typedef int DataType;
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int /*dim*/, int /*codim*/)
+    {
+        return true;
+    }
+#else
     bool fixedsize(int /*dim*/, int /*codim*/)
     {
         return true;
     }
+#endif
 
     template<class T>
     std::size_t size(const T&)
     {
         return 1;
     }
+
     template<class B, class T>
     void gather(B& buffer, const T& t)
     {
@@ -157,10 +165,18 @@ public:
     {}
 
     typedef int DataType;
+
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int /*dim*/, int /*codim*/)
+    {
+        return true;
+    }
+#else
     bool fixedsize(int /*dim*/, int /*codim*/)
     {
         return true;
     }
+#endif
 
     template<class T>
     std::size_t size(const T&)
@@ -262,10 +278,18 @@ class DummyDataHandle
 {
 public:
     typedef double DataType;
+
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int /*dim*/, int /*codim*/)
+    {
+        return true;
+    }
+#else
     bool fixedsize(int /*dim*/, int /*codim*/)
     {
         return true;
     }
+#endif
 
     template<class T>
     std::size_t size(const T&)
@@ -303,10 +327,18 @@ public:
     {}
 
     typedef int DataType;
+
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int /*dim*/, int /*codim*/)
+    {
+        return true;
+    }
+#else
     bool fixedsize(int /*dim*/, int /*codim*/)
     {
         return true;
     }
+#endif
 
     template<class T>
     std::size_t size(const T&)

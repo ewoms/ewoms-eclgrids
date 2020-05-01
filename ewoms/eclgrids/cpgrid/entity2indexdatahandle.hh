@@ -57,10 +57,15 @@ public:
     Entity2IndexDataHandle(const CpGridData& fromGrid, const CpGridData& toGrid, DataHandle& data)
         : fromGrid_(fromGrid), toGrid_(toGrid), data_(data)
     {}
+
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedsize() // be aware that this must *not* be camelCase!
+    { return data_.fixedSize(3, codim); }
+#else
     bool fixedsize()
-    {
-        return data_.fixedsize(3, codim);
-    }
+    { return data_.fixedsize(3, codim); }
+#endif
+
     std::size_t size(std::size_t i)
     {
         return data_.size(Entity<codim>(fromGrid_, i, true));

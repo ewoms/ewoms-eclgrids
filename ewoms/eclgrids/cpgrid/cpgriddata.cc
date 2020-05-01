@@ -244,10 +244,13 @@ struct DefaultContainerHandle
     DefaultContainerHandle(const C& gatherCont, C& scatterCont)
         : gatherCont_(gatherCont), scatterCont_(scatterCont)
     {}
-    bool fixedsize(std::size_t, std::size_t)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t, std::size_t codim)
     {
         return codim == 0;
@@ -285,10 +288,13 @@ struct FaceTagNormalBIdHandle
         : gatherTags_(gatherTags), gatherNormals_(gatherNormals), gatherBIds_(gatherBIds),
           scatterTags_(scatterTags), scatterNormals_(scatterNormals), scatterBIds_(scatterBIds)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 1;
@@ -342,10 +348,13 @@ struct FaceTagNormalHandle
         : gatherTags_(gatherTags), gatherNormals_(gatherNormals),
           scatterTags_(scatterTags), scatterNormals_(scatterNormals)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 1;
@@ -390,10 +399,13 @@ struct PointGeometryHandle
     PointGeometryHandle(const Container& gatherCont, Container& scatterCont)
         : gatherPoints_(gatherCont), scatterPoints_(scatterCont)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 3;
@@ -446,10 +458,13 @@ struct FaceGeometryHandle
     FaceGeometryHandle(const Container& gatherCont, Container& scatterCont)
         : gatherPoints_(gatherCont), scatterPoints_(scatterCont)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 1;
@@ -497,10 +512,13 @@ struct CellGeometryHandle
         : gatherCont_(gatherCont), scatterCont_(scatterCont), pointGeom_(pointGeom),
           cell2Points_(cell2Points)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 0;
@@ -563,10 +581,13 @@ struct Cell2PointsDataHandle
         : globalCell2Points_(globalCell2Points), globalIds_(globalIds), globalAdditionalPointIds_(globalAdditionalPointIds),
           localCell2Points_(localCell2Points), flatGlobalPoints_(flatGlobalPoints), additionalPointIds_(additionalPointIds)
     {}
-    bool fixedsize(int, int)
-    {
-        return false;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return false; }
+#else
+    bool fixedsize(int, int) const
+    { return false; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == 0;
@@ -625,10 +646,13 @@ struct RowSizeDataHandle
                       std::vector<int>& noEntries)
         : global_(global), noEntries_(noEntries)
     {}
-    bool fixedsize(int, int)
-    {
-        return true;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return true; }
+#else
+    bool fixedsize(int, int) const
+    { return true; }
+#endif
     template<class T>
     std::size_t size(const T&)
     {
@@ -684,10 +708,13 @@ struct SparseTableDataHandle
                           const std::map<int,int>& global2Local)
         : global_(global), globalIds_(globalIds), local_(local), global2Local_(global2Local)
     {}
-    bool fixedsize(int, int)
-    {
-        return false;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return false; }
+#else
+    bool fixedsize(int, int) const
+    { return false; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == from;
@@ -739,10 +766,13 @@ struct OrientedEntityTableDataHandle
                                   const IdSet* globalIds = nullptr)
         : global_(global), local_(local), globalIds_(globalIds)
     {}
-    bool fixedsize(int, int)
-    {
-        return false;
-    }
+#if DUNE_VERSION_NEWER(DUNE_GRID, 2,7)
+    bool fixedSize(int, int) const
+    { return false; }
+#else
+    bool fixedsize(int, int) const
+    { return false; }
+#endif
     bool contains(std::size_t dim, std::size_t codim)
     {
         return dim==3 && codim == from;
@@ -919,10 +949,10 @@ struct AttributeDataHandle
         : rank_(rank), indicator_(indicator), vals_(vals),
         c2e_(cell_to_entity), grid_(grid)
     {}
-    bool fixedsize()
-    {
-        return true;
-    }
+
+    bool fixedsize() const
+    { return true; }
+
     std::size_t size(std::size_t i)
     {
         return c2e_[i].size();
