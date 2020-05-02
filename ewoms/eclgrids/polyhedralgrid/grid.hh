@@ -953,6 +953,8 @@ namespace Dune
           {
             return 1;
           }
+        default:
+          throw std::logic_error("Not implemented: codim "+std::to_string(codim)+" entities for PolyhedralGrid");
       }
       return 0;
     }
@@ -984,6 +986,8 @@ namespace Dune
             const int coordIndex = GlobalCoordinate :: dimension * seed.index();
             return copyToGlobalCoordinate( grid_.node_coordinates + coordIndex );
           }
+        default:
+          throw std::logic_error("Not implemented: codim "+std::to_string(codim)+" entities for PolyhedralGrid");
       }
       return GlobalCoordinate( 0 );
     }
