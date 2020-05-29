@@ -37,7 +37,7 @@
 
 #include <cmath>
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include "volumes.hh"
 
 namespace Dune

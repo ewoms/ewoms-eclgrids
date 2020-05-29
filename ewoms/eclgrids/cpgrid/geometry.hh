@@ -49,7 +49,7 @@
 
 #include <ewoms/eclgrids/cpgrid/entityrep.hh>
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 namespace Dune
 {

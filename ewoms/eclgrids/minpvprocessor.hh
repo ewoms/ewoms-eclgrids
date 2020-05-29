@@ -19,7 +19,7 @@
 #ifndef EWOMS_MINPVPROCESSOR_HH
 #define EWOMS_MINPVPROCESSOR_HH
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <ewoms/eclgrids/utility/parserincludes.hh>
 
 #include <array>

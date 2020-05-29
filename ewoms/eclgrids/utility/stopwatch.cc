@@ -34,7 +34,7 @@
 #include "config.h"
 #endif
 #include <ewoms/eclgrids/utility/stopwatch.hh>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 namespace Ewoms
 {
