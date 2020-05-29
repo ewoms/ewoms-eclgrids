@@ -37,7 +37,7 @@
 #include <numeric>
 #include <algorithm>
 #include <boost/range/iterator_range.hpp>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 #include <ostream>
 

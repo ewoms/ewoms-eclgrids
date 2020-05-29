@@ -19,7 +19,7 @@
 #ifndef EWOMS_PINCHPROCESSOR_HH
 #define EWOMS_PINCHPROCESSOR_HH
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <ewoms/eclgrids/gridhelpers.hh>
 #include <ewoms/eclio/parser/eclipsestate/grid/nnc.hh>
 #include <ewoms/eclio/parser/eclipsestate/grid/facedir.hh>

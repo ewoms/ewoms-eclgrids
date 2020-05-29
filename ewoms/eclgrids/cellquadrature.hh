@@ -20,7 +20,7 @@
 #define EWOMS_CELLQUADRATURE_HH
 
 #include <ewoms/eclgrids/unstructuredgrid.h>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <algorithm>
 #include <cmath>
 

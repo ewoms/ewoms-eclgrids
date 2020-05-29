@@ -19,7 +19,7 @@
 #ifndef EWOMS_FACEQUADRATURE_HH
 #define EWOMS_FACEQUADRATURE_HH
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <ewoms/eclgrids/unstructuredgrid.h>
 #include <cmath>
 

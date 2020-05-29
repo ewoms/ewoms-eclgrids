@@ -38,7 +38,7 @@
 #include <map>
 #include <array>
 #include <unordered_set>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 // Warning suppression for Dune includes.
 

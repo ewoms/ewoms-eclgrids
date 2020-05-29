@@ -20,7 +20,7 @@
 #define EWOMS_ECLGRIDSADAPTER_HH
 
 #include <ewoms/eclgrids/unstructuredgrid.h>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <ewoms/eclgrids/cpgrid.hh>
 #include <stdexcept>
 #include <vector>

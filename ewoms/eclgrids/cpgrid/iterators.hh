@@ -36,7 +36,7 @@ along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <dune/grid/common/gridenums.hh>
 #include "partitioniteratorrule.hh"
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 namespace Dune
 {

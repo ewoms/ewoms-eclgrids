@@ -63,7 +63,7 @@ namespace Dune
 // -------------------------------------------------------------------
 
 //#include <ewoms/eclsimulators/deprecated/utility/sparsetable.hh>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include <climits>
 #include <vector>
 

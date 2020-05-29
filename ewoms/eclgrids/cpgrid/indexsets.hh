@@ -35,7 +35,7 @@ along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 #define EWOMS_INDEXSETS_HEADER
 
 #include <dune/geometry/type.hh>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include "globalidmapping.hh"
 #include "intersection.hh"
 

@@ -31,7 +31,7 @@
 
 // Re-enable warnings.
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 #include <ewoms/eclgrids/unstructuredgrid.h>
 #include <ewoms/eclgrids/cart_grid.h>

@@ -36,7 +36,7 @@
 
 #include <dune/grid/common/gridenums.hh>
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 // The next statement is a layering violation: we only #include
 // preprocess.h to get at its "enum face_tag" definition.  Enum

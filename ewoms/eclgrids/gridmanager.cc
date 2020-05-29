@@ -24,7 +24,7 @@
 #include <ewoms/eclgrids/cart_grid.h>
 #include <ewoms/eclgrids/cornerpoint_grid.h>
 #include <ewoms/eclgrids/minpvprocessor.hh>
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 
 #include <ewoms/eclgrids/utility/parserincludes.hh>
 

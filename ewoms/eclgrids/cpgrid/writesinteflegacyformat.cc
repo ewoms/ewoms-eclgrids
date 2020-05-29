@@ -38,7 +38,7 @@
 #include <fstream>
 #include <vector>
 
-#include <ewoms/eclgrids/utility/errormacros.hh>
+#include <ewoms/eclio/errormacros.hh>
 #include "cpgriddata.hh"
 
 namespace Dune
