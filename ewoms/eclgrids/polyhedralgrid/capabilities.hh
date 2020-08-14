@@ -37,6 +37,12 @@ namespace Dune
       static const bool v = (codim == 0 || codim == 1 || codim == dim);
     };
 
+    template< int dim, int dimworld, int codim >
+    struct hasEntityIterator< PolyhedralGrid< dim, dimworld >, codim >
+    {
+      static const bool v = (codim == 0 || codim == 1 || codim == dim);
+    };
+
 #if ! DUNE_VERSION_NEWER(DUNE_GRID, 2, 5)
     template< int dim, int dimworld >
     struct isParallel< PolyhedralGrid< dim, dimworld > >

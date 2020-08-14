@@ -21,6 +21,7 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
+#include <functional>
 
 #ifdef HAVE_MPI
 #include "mpi.h"
@@ -116,7 +117,7 @@ private:
 /// Computes for all processes all indices of wells that
 /// will be assigned to this process.
 /// \param parts The partition number for each cell
-/// \param globalCell The linearized cartesian index for each index
+/// \param gid Functor that turns cell index to global id.
 /// \param eclipseState The eclipse information
 /// \param well_connecton The information about the perforations of each well.
 /// \param exportList List of cells to be exported. Each entry is a tuple of the
@@ -128,7 +129,7 @@ private:
 /// \param cc Information about the parallelism together with the decomposition.
 std::vector<std::vector<int> >
 postProcessPartitioningForWells(std::vector<int>& parts,
-                                const std::vector<int>& globalCell,
+                                std::function<int(int)> gid,
                                 const std::vector<EwomsEclWellType>&  wells,
                                 const WellConnections& well_connections,
                                 std::vector<std::tuple<int,int,char>>& exportList,

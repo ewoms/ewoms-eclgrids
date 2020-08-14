@@ -22,19 +22,6 @@
 
 #endif
 
-namespace Dune
-{
-template<int dim>
-Dune::cpgrid::Entity<dim> createEntity(const Dune::CpGrid& grid, int index, bool orientation)
-{
-    return Dune::cpgrid::Entity<dim>(*grid.current_view_data_, index, orientation);
-}
-/*
-template Dune::cpgrid::Entity<1> createEntity<1>(const Dune::CpGrid& grid, int index, bool orientation);
-template Dune::cpgrid::Entity<3> createEntity<3>(const Dune::CpGrid& grid, int index, bool orientation);
-*/
-} // end namespace Dune
-
 #if HAVE_MPI
 class MPIError {
 public:
