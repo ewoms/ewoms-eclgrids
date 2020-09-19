@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(Pinch)
 
     z_threshold = 0.4;
     pinch_no_gap = true;
-    minpvv = std::vector(4, 0.6);
+    minpvv = std::vector<double>(4, 0.6);
     z1 = zcorn;
     nnc = mp1.process(thickness, z_threshold, pv, minpvv, actnum, fill_removed_cells, z1.data(), pinch_no_gap);
 
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(Pinch)
 
     z_threshold = 0.6;
     pinch_no_gap = true;
-    minpvv = std::vector(4, 0.4);
+    minpvv = std::vector<double>(4, 0.4);
     z1 = zcorn;
     nnc = mp1.process(thickness, z_threshold, pv, minpvv, actnum, fill_removed_cells, z1.data(), pinch_no_gap);
 
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(Pinch)
 
     z_threshold = 1.1;
     pinch_no_gap = true;
-    minpvv = std::vector(4, 1.1);
+    minpvv = std::vector<double>(4, 1.1);
     z1 = zcorn;
     nnc = mp1.process(thickness, z_threshold, pv, minpvv, actnum, fill_removed_cells, z1.data(), pinch_no_gap);
     zcornAfter =
