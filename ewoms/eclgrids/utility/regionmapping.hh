@@ -19,7 +19,8 @@
 #ifndef EWOMS_REGIONMAPPING_HH
 #define EWOMS_REGIONMAPPING_HH
 
-#include <boost/range.hpp>
+#include <boost/range/iterator.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include <unordered_map>
 #include <vector>
