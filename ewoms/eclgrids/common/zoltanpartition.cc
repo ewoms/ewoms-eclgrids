@@ -23,6 +23,7 @@
 #include <ewoms/eclgrids/cpgrid/cpgriddata.hh>
 #include <ewoms/eclgrids/cpgrid/entity.hh>
 #include <algorithm>
+#include <type_traits>
 
 #if defined(HAVE_ZOLTAN) && defined(HAVE_MPI)
 namespace Dune
@@ -257,7 +258,7 @@ public:
         if (cc.rank() == root) {
             rc = callZoltan();
         }
-        cc.broadcast<int>(&rc, 1, root);
+        cc.broadcast(&rc, 1, root);
         if (rc != ZOLTAN_OK) {
             EWOMS_THROW(std::runtime_error, "Could not initialize Zoltan, or Zoltan partitioning failed.");
         }
@@ -269,11 +270,10 @@ public:
             for (int i = 0; i < numExport; ++i) {
                 ++numberOfExportedVerticesPerProcess[exportToPart[i]];
             }
-            int dummyForRoot = 0;
-            cc.scatter<int>(numberOfExportedVerticesPerProcess.data(), &dummyForRoot, 1, root);
-        } else {
-            cc.scatter<int>(nullptr, &numImport, 1, root);
         }
+
+        cc.scatter(numberOfExportedVerticesPerProcess.data(), &numImport, 1, root);
+        assert(cc.rank() != root || numImport == 0);
 
         // 2. Build the imports/exports themselves.
         std::string error;
@@ -313,22 +313,16 @@ public:
         }
         // Check for errors
         int ok = error.empty();
-        cc.broadcast<int>(&ok, 1, root);
+        cc.broadcast(&ok, 1, root);
         if (!ok) {
             EWOMS_THROW(std::runtime_error, error);
         }
 
         // 3. Communicate the imports/exports.
-        if (cc.rank() == root) {
-            std::vector<unsigned int> dummyIndicesForRoot(1, 0);
-            cc.scatterv<unsigned int>(globalIndicesToSend.data(),
-                                      numberOfExportedVerticesPerProcess.data(),
-                                      offsets.data(),
-                                      dummyIndicesForRoot.data(),
-                                      0,
-                                      root);
-        } else {
-            cc.scatterv<unsigned int>(nullptr, nullptr, nullptr, importGlobalGidsVector.data(), numImport, root);
+        cc.scatterv(globalIndicesToSend.data(), numberOfExportedVerticesPerProcess.data(),
+                    offsets.data(), importGlobalGidsVector.data(), numImport, root);
+        if (cc.rank() != root)
+        {
             importGlobalGids = importGlobalGidsVector.data();
         }
 
@@ -430,9 +424,10 @@ private:
     ZOLTAN_ID_PTR exportLocalGids = nullptr;
     int *importProcs, *importToPart, *exportProcs, *exportToPart;
     std::unique_ptr<CombinedGridWellGraph> gridAndWells;
-    std::vector<unsigned int> importGlobalGidsVector;
+    using ZoltanId = typename std::remove_pointer<ZOLTAN_ID_PTR>::type;
+    std::vector<ZoltanId> importGlobalGidsVector;
     std::vector<int> numberOfExportedVerticesPerProcess;
-    std::vector<unsigned int> globalIndicesToSend;
+    std::vector<ZoltanId> globalIndicesToSend;
     std::vector<int> offsets;
 };
 
