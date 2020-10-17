@@ -1,21 +1,6 @@
-//===========================================================================
-//
-// File: GeometryHelpers.hpp
-//
-// Created: Mon Jun 22 13:43:23 2009
-//
-// Author(s): Atgeirr F Rasmussen <atgeirr@sintef.no>
-//            Halvor M Nilsen     <hnil@sintef.no>
-//            Bjørn Spjelkavik    <bsp@sintef.no>
-//
-// $Date$
-//
-// $Revision$
-//
-//===========================================================================
-
+// -*- mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// vi: set et ts=4 sw=4 sts=4:
 /*
-
   This file is part of the eWoms project.
 
   eWoms is free software: you can redistribute it and/or modify
@@ -31,7 +16,6 @@
   You should have received a copy of the GNU General Public License
   along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #ifndef EWOMS_GEOMETRYHELPERS_HEADER
 #define EWOMS_GEOMETRYHELPERS_HEADER
 

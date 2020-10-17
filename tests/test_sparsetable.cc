@@ -1,36 +1,21 @@
-//===========================================================================
-//
-// File: test_sparsetable.cpp
-//
-// Created: Thu May 28 10:01:46 2009
-//
-// Author(s): Atgeirr F Rasmussen <atgeirr@sintef.no>
-//            Bård Skaflestad     <bard.skaflestad@sintef.no>
-//
-// $Date$
-//
-// $Revision$
-//
-//===========================================================================
-
+// -*- mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// vi: set et ts=4 sw=4 sts=4:
 /*
+  This file is part of the eWoms project.
 
-  This file is part of The Open Reservoir Simulator Project (OpenRS).
-
-  OpenRS is free software: you can redistribute it and/or modify
+  eWoms is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  OpenRS is distributed in the hope that it will be useful,
+  eWoms is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenRS.  If not, see <http://www.gnu.org/licenses/>.
+  along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include <config.h>
 
 #define NVERBOSE // to suppress our messages when throwing

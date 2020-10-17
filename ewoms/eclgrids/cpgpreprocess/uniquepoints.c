@@ -1,19 +1,6 @@
-/*===========================================================================
-//
-// File: uniquepoints.c
-//
-// Created: Fri Jun 19 08:46:05 2009
-//
-// Author: Jostein R. Natvig <Jostein.R.Natvig@sintef.no>
-//
-// $Date$
-//
-// $Revision$
-//
-//==========================================================================*/
-
+// -*- mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// vi: set et ts=4 sw=4 sts=4:
 /*
-
   This file is part of the eWoms project.
 
   eWoms is free software: you can redistribute it and/or modify
@@ -29,7 +16,6 @@
   You should have received a copy of the GNU General Public License
   along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "config.h"
 #include <assert.h>
 #include <float.h>

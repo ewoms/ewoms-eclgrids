@@ -1,20 +1,6 @@
-//===========================================================================
-//
-// File: entity_test.cpp
-//
-// Created: Fri May 29 14:04:50 2009
-//
-// Author(s): Atgeirr F Rasmussen <atgeirr@sintef.no>
-//            Bård Skaflestad     <bard.skaflestad@sintef.no>
-//
-// $Date$
-//
-// $Revision$
-//
-//===========================================================================
-
+// -*- mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// vi: set et ts=4 sw=4 sts=4:
 /*
-
   This file is part of the eWoms project.
 
   eWoms is free software: you can redistribute it and/or modify

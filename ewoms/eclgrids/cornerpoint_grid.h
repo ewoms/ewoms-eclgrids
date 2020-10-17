@@ -1,19 +1,6 @@
-/*===========================================================================
-//
-// File: preprocess.h
-//
-// Created: Fri Jun 19 08:43:04 2009
-//
-// Author: Jostein R. Natvig <Jostein.R.Natvig@sintef.no>
-//
-// $Date: 2010-08-27 19:12:16 +0200 (Fri, 27 Aug 2010) $
-//
-// $Revision: 930 $
-//
-//==========================================================================*/
-
+// -*- mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+// vi: set et ts=4 sw=4 sts=4:
 /*
-
   This file is part of the eWoms project.
 
   eWoms is free software: you can redistribute it and/or modify
@@ -29,7 +16,6 @@
   You should have received a copy of the GNU General Public License
   along with eWoms.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #ifndef EWOMS_CORNERPOINT_GRID_HH
 #define EWOMS_CORNERPOINT_GRID_HH
 
