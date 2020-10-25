@@ -262,13 +262,8 @@ public:
     void communicate(DataHandle& data, InterfaceType iftype, CommunicationDirection dir);
 
 #if HAVE_MPI
-#if DUNE_VERSION_NEWER(DUNE_GRID, 2, 7)
     /// \brief The type of the  Communicator.
     using Communicator = VariableSizeCommunicator<>;
-#else
-    /// \brief The type of the Communicator.
-    using Communicator = Ewoms::VariableSizeCommunicator<>;
-#endif
 
     /// \brief The type of the map describing communication interfaces.
     using InterfaceMap = Communicator::InterfaceMap;

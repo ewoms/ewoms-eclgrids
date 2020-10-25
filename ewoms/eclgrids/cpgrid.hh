@@ -1239,13 +1239,8 @@ namespace Dune
 #endif
         }
 #if HAVE_MPI
-#if DUNE_VERSION_NEWER(DUNE_GRID, 2, 7)
         /// \brief The type of the map describing communication interfaces.
         using InterfaceMap = VariableSizeCommunicator<>::InterfaceMap;
-#else
-        /// \brief The type of the map describing communication interfaces.
-        using InterfaceMap = Ewoms::VariableSizeCommunicator<>::InterfaceMap;
-#endif
 #else
         // bogus definition for the non parallel type. VariableSizeCommunicator not
         // availabe
