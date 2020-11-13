@@ -145,16 +145,12 @@ namespace cpgrid
             nnc_cells[PinchNNC].insert({low, high});
         }
         // Add explicit NNCs.
-        for (const auto single_nnc : nncs.data()) {
-            // Repeated NNCs will only exist in the map once
-            // (repeated insertions have no effect), and we make
-            // sure NNCs specified using either order of cells
-            // end up with the same {low, high} pair.
-            // The code that computes the transmissibilities is responsible
-            // for ensuring repeated NNC transmissibilities are added.
-            auto low = std::min(single_nnc.cell1, single_nnc.cell2);
-            auto high = std::max(single_nnc.cell1, single_nnc.cell2);
-            nnc_cells[ExplicitNNC].insert({low, high});
+        for (const auto single_nnc : nncs.input()) {
+            // Repeated NNCs will only exist in the map once (repeated
+            // insertions have no effect). The code that computes the
+            // transmissibilities is responsible for ensuring repeated NNC
+            // transmissibilities are added.
+            nnc_cells[ExplicitNNC].insert({single_nnc.cell1, single_nnc.cell2});
         }
 
         // this variable is only required because getCellZvals() needs
@@ -1023,9 +1019,11 @@ namespace cpgrid
                 cpgrid::OrientedEntityTable<0, 1>::row_type cf = c2f[cell_ent];
                 face_indices.clear();
                 for (int local_index = 0; local_index < cf.size(); ++local_index) {
-                    face_indices.push_back(cf[local_index].index());
+                    if (face_to_output_face[cf[local_index].index()] != cpgrid::NNCFace) {
+                        face_indices.push_back(cf[local_index].index());
+                    }
                 }
-                IndirectArray<point_t> cell_pts(face_centroids, &face_indices[0], &face_indices[0] + cf.size());
+                IndirectArray<point_t> cell_pts(face_centroids, &face_indices[0], &face_indices[0] + face_indices.size());
                 point_t cell_avg = average(cell_pts);
                 point_t cell_centroid(0.0);
                 double tot_cell_vol = 0.0;
