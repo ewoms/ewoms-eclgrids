@@ -23,7 +23,36 @@
 
 #include <ewoms/eclgrids/cpgrid.hh>
 #include <ewoms/eclgrids/common/zoltangraphfunctions.hh>
+#if HAVE_MPI
+namespace Dune
+{
+namespace cpgrid
+{
+template<class Id>
+std::tuple<std::vector<int>, std::vector<std::pair<std::string,bool>>,
+           std::vector<std::tuple<int,int,char> >,
+           std::vector<std::tuple<int,int,char,int> > >
+makeImportAndExportLists(const Dune::CpGrid& cpgrid,
+                         const Dune::CollectiveCommunication<MPI_Comm>& cc,
+                         const std::vector<Dune::cpgrid::EwomsEclWellType> * wells,
+                         const Dune::cpgrid::CombinedGridWellGraph* gridAndWells,
+                         int root,
+                         int numExport,
+                         int numImport,
+                         const Id* exportLocalGids,
+                         const Id* exportGlobalGids,
+                         const int* exportToPart,
+                         const Id* importGlobalGids,
+                         bool allowDistributedWells = false);
 
+template<class Id>
+std::tuple<int, std::vector<Id> >
+scatterExportInformation(int numExport, const Id* exportGlobalGids,
+                         const int* exportToPart, int root,
+                         const Dune::CollectiveCommunication<MPI_Comm>& cc);
+} // end namespace cpgrid
+} // end namespace Dune
+#endif //HAVE_MPI
 #if defined(HAVE_ZOLTAN) && defined(HAVE_MPI)
 namespace Dune
 {

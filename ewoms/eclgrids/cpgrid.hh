@@ -569,11 +569,13 @@ namespace Dune
 
         /// \brief Distributes this grid over the available nodes in a distributed machine
         /// \param overlapLayers The number of layers of cells of the overlap region (default: 1).
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
         /// \warning May only be called once.
-        bool loadBalance(int overlapLayers=1)
+        bool loadBalance(int overlapLayers=1, bool useZoltan=true)
         {
             using std::get;
-            return get<0>(scatterGrid(defaultTransEdgeWgt, false, nullptr, false, nullptr, true, overlapLayers ));
+            return get<0>(scatterGrid(defaultTransEdgeWgt, false, nullptr, false, nullptr, true, overlapLayers, useZoltan ));
         }
 
         // loadbalance is not part of the grid interface therefore we skip it.
@@ -591,6 +593,8 @@ namespace Dune
         ///            possible pairs of cells in the completion set of a well.
         /// \param transmissibilities The transmissibilities used as the edge weights.
         /// \param overlapLayers The number of layers of cells of the overlap region (default: 1).
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
         /// \warning May only be called once.
         /// \return A pair consisting of a boolean indicating whether loadbalancing actually happened and
         ///         a vector containing a pair of name and a boolean, indicating whether this well has
@@ -598,9 +602,9 @@ namespace Dune
         std::pair<bool, std::vector<std::pair<std::string,bool> > >
         loadBalance(const std::vector<cpgrid::EwomsEclWellType> * wells,
                     const double* transmissibilities = nullptr,
-                    int overlapLayers=1)
+                    int overlapLayers=1, bool useZoltan=true)
         {
-            return scatterGrid(defaultTransEdgeWgt, false, wells, false, transmissibilities, false, overlapLayers);
+            return scatterGrid(defaultTransEdgeWgt, false, wells, false, transmissibilities, false, overlapLayers, useZoltan);
         }
 
         // loadbalance is not part of the grid interface therefore we skip it.
@@ -621,7 +625,9 @@ namespace Dune
         /// \param transmissibilities The transmissibilities used to calculate the edge weights.
         /// \param ownersFirst Order owner cells before copy/overlap cells.
         /// \param addCornerCells Add corner cells to the overlap layer.
-        /// \param The number of layers of cells of the overlap region (default: 1).
+        /// \param overlapLayers The number of layers of cells of the overlap region (default: 1).
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
         /// \warning May only be called once.
         /// \return A pair consisting of a boolean indicating whether loadbalancing actually happened and
         ///         a vector containing a pair of name and a boolean, indicating whether this well has
@@ -629,9 +635,10 @@ namespace Dune
         std::pair<bool, std::vector<std::pair<std::string,bool> > >
         loadBalance(EdgeWeightMethod method, const std::vector<cpgrid::EwomsEclWellType> * wells,
                     const double* transmissibilities = nullptr, bool ownersFirst=false,
-                    bool addCornerCells=false, int overlapLayers=1)
+                    bool addCornerCells=false, int overlapLayers=1,
+                    bool useZoltan = true)
         {
-            return scatterGrid(method, ownersFirst, wells, false, transmissibilities, addCornerCells, overlapLayers);
+            return scatterGrid(method, ownersFirst, wells, false, transmissibilities, addCornerCells, overlapLayers, useZoltan);
         }
 
         /// \brief Distributes this grid and data over the available nodes in a distributed machine.
@@ -646,6 +653,8 @@ namespace Dune
         /// \param transmissibilities The transmissibilities used to calculate the edge weights.
         /// \param overlapLayers The number of layers of overlap cells to be added
         ///        (default: 1)
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
         /// \tparam DataHandle The type implementing DUNE's DataHandle interface.
         /// \warning May only be called once.
         /// \return A pair consisting of a boolean indicating whether loadbalancing actually happened and
@@ -656,10 +665,14 @@ namespace Dune
         loadBalance(DataHandle& data,
                     const std::vector<cpgrid::EwomsEclWellType> * wells,
                     const double* transmissibilities = nullptr,
-                    int overlapLayers=1)
+                    int overlapLayers=1, bool useZoltan = true)
         {
-            auto ret = loadBalance(wells, transmissibilities, overlapLayers);
-            scatterData(data);
+            auto ret = loadBalance(wells, transmissibilities, overlapLayers, useZoltan);
+            using std::get;
+            if (get<0>(ret))
+            {
+                scatterData(data);
+            }
             return ret;
         }
 
@@ -680,7 +693,10 @@ namespace Dune
         /// \param transmissibilities The transmissibilities used to calculate the edge weights.
         /// \param ownersFirst Order owner cells before copy/overlap cells.
         /// \param addCornerCells Add corner cells to the overlap layer.
-        /// \param The number of layers of cells of the overlap region (default: 1).
+        /// \param overlapLayers The number of layers of cells of the overlap region (default: 1).
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
+        /// \tparam DataHandle The type implementing DUNE's DataHandle interface.
         /// \warning May only be called once.
         /// \return A pair consisting of a boolean indicating whether loadbalancing actually happened and
         ///         a vector containing a pair of name and a boolean, indicating whether this well has
@@ -691,10 +707,14 @@ namespace Dune
                     const std::vector<cpgrid::EwomsEclWellType> * wells,
                     bool serialPartitioning,
                     const double* transmissibilities = nullptr, bool ownersFirst=false,
-                    bool addCornerCells=false, int overlapLayers=1)
+                    bool addCornerCells=false, int overlapLayers=1, bool useZoltan = true)
         {
-            auto ret = scatterGrid(method, ownersFirst, wells, serialPartitioning, transmissibilities, addCornerCells, overlapLayers);
-            scatterData(data);
+            auto ret = scatterGrid(method, ownersFirst, wells, serialPartitioning, transmissibilities, addCornerCells, overlapLayers, useZoltan);
+            using std::get;
+            if (get<0>(ret))
+            {
+                scatterData(data);
+            }
             return ret;
         }
 
@@ -702,14 +722,19 @@ namespace Dune
         /// \param data A data handle describing how to distribute attached data.
         /// \param overlapLayers The number of layers of overlap cells to be added
         ///        (default: 1)
+        /// \param useZoltan Whether to use Zoltan for partitioning or our simple approach based on
+        ///        rectangular partitioning the underlying cartesian grid.
         /// \tparam DataHandle The type implementing DUNE's DataHandle interface.
         /// \warning May only be called once.
         template<class DataHandle>
         bool loadBalance(DataHandle& data,
-                         int overlapLayers=1)
+                         int overlapLayers=1, bool useZoltan = true)
         {
-            bool ret = loadBalance(overlapLayers);
-            scatterData(data);
+            bool ret = loadBalance(overlapLayers, useZoltan);
+            if (ret)
+            {
+                scatterData(data);
+            }
             return ret;
         }
 
@@ -1357,7 +1382,7 @@ namespace Dune
                     const std::vector<cpgrid::EwomsEclWellType> * wells,
                     bool serialPartitioning,
                     const double* transmissibilities,
-                    bool addCornerCells, int overlapLayers);
+                    bool addCornerCells, int overlapLayers, bool useZoltan = true);
 
         /** @brief The data stored in the grid.
          *

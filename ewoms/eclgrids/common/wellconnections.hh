@@ -36,6 +36,7 @@
 #endif
 
 #include <ewoms/eclgrids/utility/parserincludes.hh>
+#include <ewoms/eclgrids/cpgrid.hh>
 
 namespace Dune
 {
@@ -61,7 +62,7 @@ public:
     WellConnections() = default;
 
     /// \brief Constructor
-    /// \param schedule The eclipse information
+    /// \param wells The eclipse information about the wells
     /// \param cartesianSize The logical cartesian size of the grid.
     /// \param cartesian_to_compressed Mapping of cartesian index
     ///        compressed cell index. The compressed index is used
@@ -69,6 +70,12 @@ public:
     WellConnections(const std::vector<EwomsEclWellType>& wells,
                     const std::array<int, 3>& cartesianSize,
                     const std::vector<int>& cartesian_to_compressed);
+
+    /// \brief Constructor
+    /// \param wells The eclipse information about the wells
+    /// \param cpGrid The corner point grid
+    WellConnections(const std::vector<EwomsEclWellType>& wells,
+                    const Dune::CpGrid& cpGrid);
 
     /// \brief Initialze the data of the container
     /// \param schedule The eclipse information
@@ -113,6 +120,22 @@ private:
 };
 
 #ifdef HAVE_MPI
+/// \brief Determines the wells that have peforate cells for each process.
+///
+/// On the root process omputes for all processes all indices of wells that
+/// will perforate local cells.
+/// Note that a well might perforate local cells of multiple processes
+///
+/// \param parts The partition number for each cell
+/// \param well The eclipse information about the wells.
+/// \param cpGrid The unbalanced grid we compute on.
+/// \return On the rank that has the global grid a vector with the well
+///         indices for process i at index i.
+std::vector<std::vector<int> >
+perforatingWellIndicesOnProc(const std::vector<int>& parts,
+                  const std::vector<Dune::cpgrid::EwomsEclWellType>& wells,
+                  const CpGrid& cpgrid);
+
 /// \brief Computes wells assigned to processes.
 ///
 /// Computes for all processes all indices of wells that
@@ -128,6 +151,8 @@ private:
 ///                   global cell index, the process rank that exports it, and the
 ///                   attribute on this rank (assumed to be owner)
 /// \param cc Information about the parallelism together with the decomposition.
+/// \return On rank 0 a vector with the well indices for process i
+///         at index i.
 std::vector<std::vector<int> >
 postProcessPartitioningForWells(std::vector<int>& parts,
                                 std::function<int(int)> gid,
