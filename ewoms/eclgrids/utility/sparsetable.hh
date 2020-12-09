@@ -237,11 +237,14 @@ namespace Ewoms
 	template <class IntegerIter>
 	void setRowStartsFromSizes(IntegerIter rowsize_beg, IntegerIter rowsize_end)
 	{
-            for (IntegerIter it = rowsize_beg; it != rowsize_end; ++it) {
-                if (*it < 0)
-                    EWOMS_THROW(std::runtime_error, "All row sizes must be positive.");
+#ifndef NDEBUG
+            // Check that all row sizes given are nonnegative.
+            for (auto it = rowsize_beg; it != rowsize_end; ++it) {
+                if (*it < 0) {
+                    EWOMS_THROW(std::runtime_error, "Negative row size given.");
+                }
             }
-
+#endif
             // Since we do not store the row sizes, but cumulative row sizes,
             // we have to create the cumulative ones.
             int num_rows = rowsize_end - rowsize_beg;

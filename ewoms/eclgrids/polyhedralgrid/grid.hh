@@ -999,9 +999,10 @@ namespace Dune
             return 1;
           }
         default:
-          throw std::logic_error("Not implemented: codim "+std::to_string(codim)+" entities for PolyhedralGrid");
+          {
+            return 0;
+          }
       }
-      return 0;
     }
 
     template <class EntitySeed>
@@ -1032,9 +1033,10 @@ namespace Dune
             return copyToGlobalCoordinate( grid_.node_coordinates + coordIndex );
           }
         default:
-          throw std::logic_error("Not implemented: codim "+std::to_string(codim)+" entities for PolyhedralGrid");
+          {
+            return GlobalCoordinate( 0 );
+          }
       }
-      return GlobalCoordinate( 0 );
     }
 
     template <class EntitySeed>
