@@ -99,14 +99,9 @@ endif()
 
 # print a message to indicate status of this package
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Zoltan
+find_package_handle_standard_args(ZoltanEwoms
   DEFAULT_MSG
   Zoltan_LIBRARIES
   Zoltan_INCLUDE_DIRS)
 
-if (Zoltan_FOUND)
-  # prevent dune from producing a confusing not found message. this
-  # solution is still not optimal because the package appears as
-  # "ZoltanEwoms" but it's better than nothing...
-  set(ZoltanEwoms_FOUND 1)
-endif()
+set(Zoltan_FOUND ZoltanEwoms_FOUND)
